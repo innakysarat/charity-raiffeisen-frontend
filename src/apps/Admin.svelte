@@ -10,12 +10,12 @@
         Title,
         Subtitle,
     } from '@smui/drawer';
-    import Button, { Label } from '@smui/button';
     import List, { Item, Text } from '@smui/list';
     import "../css/normalize.css";
     import "../css/svelte-mui.css";
     import CreateWidget from "../components/CreateWidget.svelte";
     import MyWidgets from "../components/MyWidgets.svelte";
+    import Statistics from "../components/Statistics.svelte";
 
     const onClickLogout = () => {
         logout();
@@ -27,6 +27,10 @@
     function setActive(value: string) {
         active = value;
     }
+
+    $: console.log(active)
+
+    let flag: boolean = false;
 
     console.log("admin here")
 </script>
@@ -73,6 +77,8 @@
                     <CreateWidget/>
                 {:else if active === "my-widgets"}
                     <MyWidgets/>
+                {:else if active === "statistics"}
+                    <Statistics/>
                 {/if}
             </main>
         </AppContent>
@@ -82,6 +88,16 @@
         <Auth/>
     </div>
 {/if}
+
+<!--<nav>-->
+<!--    <Link to="/widget">Widget</Link>-->
+<!--    <Link to="/template1">Template1</Link>-->
+<!--</nav>-->
+
+<!--<Router>-->
+<!--    <Widget path="/widget" />-->
+<!--    <Template1 path="/template1" />-->
+<!--</Router>-->
 
 <style>
     .auth-container {

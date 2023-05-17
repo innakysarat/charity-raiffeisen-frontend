@@ -16,6 +16,7 @@
     "@smui/textfield": "^7.0.0-beta.0",
     "@sveltejs/vite-plugin-svelte": "^2.0.2",
     "@tsconfig/svelte": "^3.0.0",
+    "@types/d3-scale": "^4.0.3",
     "@types/node": "^18.15.0",
     "glob": "^9.2.1",
     "path": "^0.12.7",
@@ -26,8 +27,12 @@
     "vite": "^4.1.0"
   },
   "dependencies": {
+    "@smui/card": "^7.0.0-beta.8",
     "@smui/drawer": "^7.0.0-beta.0",
+    "@smui/fab": "^7.0.0-beta.8",
     "@smui/list": "^7.0.0-beta.0",
-    "shade-blend-color": "^1.0.0"
+    "d3-scale": "^4.0.2",
+    "shade-blend-color": "^1.0.0",
+    "svelte-routing": "^1.8.8"
   }
 }

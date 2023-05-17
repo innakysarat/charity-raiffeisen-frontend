@@ -8,6 +8,8 @@
     let passwordValue: string = "";
     let error: any = null;
 
+    $: console.log(loginValue)
+
     const onClickLogin = () => {
         loginRequest(loginValue, passwordValue)
           .then(jwt => login(jwt))
