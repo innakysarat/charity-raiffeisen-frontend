@@ -8,6 +8,7 @@ import getSubscriptionInfo from "../api/getSubscriptionInfo";
 
 
 type QrState = {
+    qrId: string,
     url: string | null,
     loading: boolean,
     isPaid: boolean
@@ -18,7 +19,7 @@ export default function qrStore(sbpMerchantId: string, amount: Readable<number>,
         [isSubscription, amount],
         function ([$isSubscription, $amount], set) {
 
-            set({url: null, loading: true, isPaid: false});
+            set({qrId: null, url: null, loading: true, isPaid: false});
 
             let actual = true;
 
@@ -28,7 +29,7 @@ export default function qrStore(sbpMerchantId: string, amount: Readable<number>,
 
                     if (!actual) return;
 
-                    set({url: data.qrUrl, loading: false, isPaid: false});
+                    set({qrId: data.qrId, url: data.qrUrl, loading: false, isPaid: false});
 
                     while (actual) {
                         const status = await getPaymentInfo(data.qrId);
@@ -36,6 +37,7 @@ export default function qrStore(sbpMerchantId: string, amount: Readable<number>,
                         if (!actual) return;
                         if (status === "PAID") {
                             set({
+                                qrId: data.qrId,
                                 url: data.qrUrl,
                                 loading: false,
                                 isPaid: true
@@ -50,13 +52,14 @@ export default function qrStore(sbpMerchantId: string, amount: Readable<number>,
 
                     if (!actual) return;
 
-                    set({url: data.qrUrl, loading: false, isPaid: false});
+                    set({qrId: data.qrId, url: data.qrUrl, loading: false, isPaid: false});
                     while (actual) {
                         const status = await getSubscriptionInfo(data.subscriptionId);
                         //const status = await getPaymentInfo(data.qrId);
                         if (!actual) return;
                         if (status === "SUBSCRIBED") {
                             set({
+                                qrId: data.qrId,
                                 url: data.qrUrl,
                                 loading: false,
                                 isPaid: true

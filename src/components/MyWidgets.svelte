@@ -33,8 +33,7 @@
           })
           .then(ws => {
               ws.sort();
-              const wsFiltered = ws.filter((widget, i) => widget.widgetId % 2 === 0);
-              widgets = wsFiltered;
+              widgets = ws.filter((widget, i) => widget.widgetId % 2 === 0);
           })
     });
 

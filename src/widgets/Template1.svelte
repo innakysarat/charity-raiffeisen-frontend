@@ -23,7 +23,7 @@
     let snackbar: Snackbar;
     let snackbar_email: Snackbar;
 
-    let step: "qr" | "paid" = "qr"
+    let step: "qr" | "paid" = "qr";
 
     $: {
         const isPaid = $qr.isPaid;
@@ -48,7 +48,7 @@
     async function sendEmail() {
         // Handle sending the email
         const url = "http://localhost:8080/email/send";
-        const qrId = "AD9EEDFF824C421AADA9099789FD6021";
+        const qrId = $qr.qrId;
 
         const response = await fetch(url, {
             method: "POST",
@@ -74,7 +74,7 @@
 
     async function skip() {
         // Handle skipping the email
-        const qrId = "AD9EEDFF824C421AADA9099789FD6021";
+        const qrId = $qr.qrId;
         const url = "http://localhost:8080/email/sendDefault/" + qrId;
 
         const response = await fetch(url, {
@@ -145,17 +145,19 @@
     {:else}
         <div class="fiscal-panel" style:--mdc-theme-primary="{mainColor}">
             <h3 class="fiscal_title">{"Отправить электронный чек?"}</h3>
-            <TextField variant="filled" bind:value={email} label="Filled">
-                <HelperText persistent slot="helper">Формат почты:</HelperText>
-            </TextField>
+            <div>
+                <TextField variant="filled" bind:value={email} label="Электронная почта">
+                    <HelperText persistent slot="helper">Введите адрес электронной почты</HelperText>
+                </TextField>
+            </div>
             <div class="fiscal-buttons">
-                <Fab
-                        on:click={sendEmail} extended>
-                    <Label>Send</Label>
+                <Fab class="custom-button" color="{mainColor}"
+                     on:click={sendEmail} extended>
+                    <Label class="label-color">Получить</Label>
                 </Fab>
-                <Fab
-                        on:click={skip} extended>
-                    <Label>Skip</Label>
+                <Fab class="custom-button" color="{mainColor}"
+                     on:click={skip} extended>
+                    <Label class="label-color">Пропустить</Label>
                 </Fab>
             </div>
             <div class="right-icons">
@@ -180,7 +182,7 @@
         margin-top: 5px;
         display: flex;
         justify-content: center;
-        gap: 5px;
+        gap: 15px;
     }
 
     .fiscal_title {
@@ -188,6 +190,24 @@
         color: black;
         align-self: center;
     }
+
+    * :global(.custom-button) {
+        background-color: rgb(260, 219, 0);
+        min-width: 105px;
+        text-align: center;
+        font-size: 20px;
+        text-transform: none;
+        padding-left: 2px;
+        padding-right: 2px;
+        border-radius: 40px;
+        height: 40px;
+    }
+
+    * :global(.label-color) {
+        color: black;
+        font-size: 13px;
+    }
+
 
     .widget {
         display: flex;

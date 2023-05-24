@@ -3,12 +3,16 @@
     import Button from "@smui/button";
     import {login as loginRequest} from "../api/login";
     import {login} from "../store/auth";
+    import Snackbar, {Actions, Label} from "@smui/snackbar";
+    import IconButton from '@smui/icon-button';
+
 
     let loginValue: string = "";
     let passwordValue: string = "";
     let error: any = null;
+    let snackbarWarning: Snackbar;
 
-    $: console.log(loginValue)
+    // $: console.log(loginValue)
 
     const onClickLogin = () => {
         loginRequest(loginValue, passwordValue)
@@ -17,11 +21,16 @@
               error = null;
           })
           .catch((e) => {
+              // @ts-ignore
+              snackbarWarning.open();
+              setTimeout(() => {
+                  // @ts-ignore
+                  snackbarWarning.close()
+              }, 4000)
               error = e;
           });
     }
-
-    $: console.log(loginValue, passwordValue);
+    // $: console.log(loginValue, passwordValue);
 </script>
 
 <div class="auth">
@@ -33,6 +42,12 @@
         </div>
     {/if}
     <Button on:click={onClickLogin} variant="unelevated">Войти</Button>
+    <Snackbar bind:this={snackbarWarning} class="demo-warning">
+        <Label>Ok, it looks like that your login or password is incorrect.</Label>
+        <Actions>
+            <IconButton class="material-icons" title="Dismiss">close</IconButton>
+        </Actions>
+    </Snackbar>
 </div>
 
 <style>

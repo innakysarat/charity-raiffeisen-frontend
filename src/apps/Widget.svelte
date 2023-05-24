@@ -24,12 +24,6 @@
     $: template = templateIdToComponentMap[templateId];
 
     if (widgetId) getWidgetById(widgetId)
-      // .then(JSON.parse)
-      // .then(data => {
-      //     console.log(data)
-      //     return JSON.parse(data);
-      //
-      // })
       .then(data => {
           sbpMerchantId = data.sbpMerchantId;
           templateId = data.templateId;
