@@ -18,6 +18,7 @@
     "@tsconfig/svelte": "^3.0.0",
     "@types/d3-scale": "^4.0.3",
     "@types/node": "^18.15.0",
+    "@types/plotly.js-dist-min": "^2.3.1",
     "glob": "^9.2.1",
     "path": "^0.12.7",
     "svelte": "^3.55.1",
@@ -36,9 +37,13 @@
     "air-datepicker": "^3.3.5",
     "d3-scale": "^4.0.2",
     "date-picker-svelte": "^2.4.3",
+    "flowbite-svelte": "^0.37.5",
+    "plotly": "^1.0.6",
+    "plotly.js-dist-min": "^2.24.2",
     "s-date-range-picker": "^0.3.0",
     "shade-blend-color": "^1.0.0",
     "svelte-date-range-select": "^1.0.4",
-    "svelte-routing": "^1.8.8"
+    "svelte-routing": "^1.8.8",
+    "svelte-use-form": "^2.6.2"
   }
 }

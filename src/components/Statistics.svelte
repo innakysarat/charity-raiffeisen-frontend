@@ -18,6 +18,7 @@
     import {Label} from "@smui/snackbar";
     import Fab from "@smui/fab";
     import DateRangeSelect from "svelte-date-range-select";
+    import Plotly from 'plotly.js-dist-min'
 
     interface Metric {
         paymentDate: string;
@@ -44,12 +45,6 @@
     let width = 500;
     let height = 200;
 
-    let widthAvg = 500;
-    let heightAvg = 1000;
-
-    function formatMobile(tick) {
-        return "'" + tick.toString().slice(-2);
-    }
 
     $: xScale = scaleLinear()
         .domain([0, xTicks.length])
@@ -83,8 +78,6 @@
         await getFundIncome().then(
             data => {
                 fundIncome = data;
-                //xTicks = txData.map(item => item.date);
-                //yTicks = txData.map(item => item.amount);
                 console.log(fundIncome);
             });
         await getFundAverageCheque().then(data => {
@@ -109,6 +102,121 @@
                 console.log(fundLostIncome);
                 loading = false;
             });
+
+        await Plotly.newPlot(
+            document.getElementById('revenue'),
+            [{
+                x: fundIncome.map(item => item.paymentDate),
+                y: fundIncome.map(item => item.amount),
+                type: 'scatter',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Выручка'}
+        );
+
+        await Plotly.newPlot(
+            document.getElementById('average-order-value'),
+            [{
+                x: averageCheque.map(item => item.paymentDate),
+                y: averageCheque.map(item => item.amount),
+                type: 'scatter',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Средний чек платежа'}
+        );
+
+
+        await Plotly.newPlot(
+            document.getElementById('transaction-count'),
+            [{
+                x: transactionCnt.map(item => item.paymentDate),
+                y: transactionCnt.map(item => item.amount),
+                type: 'bar',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Количество платежей'}
+        );
+
+        await Plotly.newPlot(
+            document.getElementById('subscription-count'),
+            [{
+                x: subscriptionCnt.map(item => item.paymentDate),
+                y: subscriptionCnt.map(item => item.amount),
+                type: 'bar',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                },
+                name: 'Оформленные подписки'
+            },
+                {
+                    x: subscriptionCnt.map(item => item.paymentDate),
+                    y: [6, 7, 13, 25, 43, 50],
+                    type: 'bar',
+                    marker: {
+                        color: 'red', //  цвет второго графика на красный
+                        opacity: 0.6 //  прозрачность ключевых точек
+                    },
+                    line: {
+                        color: 'red' //  цвет линии второго графика на красный
+                    },
+                    name: 'Активные подписки'
+                }],
+            {title: 'Количество подписок'}
+        );
+        await Plotly.newPlot(
+            document.getElementById('subscription-avg-cheque'),
+            [{
+                x: subscriptionAvgCheque.map(item => item.paymentDate),
+                y: subscriptionAvgCheque.map(item => item.amount),
+                type: 'scatter',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Средний чек оформленной подписки'}
+        );
+        await Plotly.newPlot(
+            document.getElementById('lost-revenue'),
+            [{
+                x: fundLostIncome.map(item => item.paymentDate),
+                y: fundLostIncome.map(item => item.amount),
+                type: 'scatter',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Упущенная выгода'}
+        );
 
     });
 
@@ -158,7 +266,6 @@
     const endDateId = 'end_date_id'
 
     async function handleStatisticsDateRange(data) {
-        //console.log(data.detail)
         await statisticDateRangeRequest(data.detail.startDate, data.detail.endDate)
             .then(data => {
                 dateRangeData = data;
@@ -173,6 +280,119 @@
             .catch((e) => {
                 console.log(e);
             });
+        await Plotly.newPlot(
+            document.getElementById('revenue'),
+            [{
+                x: fundIncome.map(item => item.paymentDate),
+                y: fundIncome.map(item => item.amount),
+                type: 'scatter',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Выручка'}
+        );
+
+        await Plotly.newPlot(
+            document.getElementById('average-order-value'),
+            [{
+                x: averageCheque.map(item => item.paymentDate),
+                y: averageCheque.map(item => item.amount),
+                type: 'scatter',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Средний чек платежа'}
+        );
+        await Plotly.newPlot(
+            document.getElementById('transaction-count'),
+            [{
+                x: transactionCnt.map(item => item.paymentDate),
+                y: transactionCnt.map(item => item.amount),
+                type: 'bar',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Количество платежей'}
+        );
+
+        await Plotly.newPlot(
+            document.getElementById('subscription-count'),
+            [
+                {
+                    x: subscriptionCnt.map(item => item.paymentDate),
+                    y: subscriptionCnt.map(item => item.amount),
+                    type: 'bar',
+                    marker: {
+                        color: 'blue', // Установите цвет графика на синий
+                        opacity: 0.6 // Установите прозрачность ключевых точек
+                    },
+                    line: {
+                        color: 'blue' // Установите цвет линии графика на синий
+                    },
+                    name: 'Оформленные подписки'
+                },
+                {
+                    x: subscriptionCnt.map(item => item.paymentDate),
+                    y: [6, 7, 13, 25, 43, 50],
+                    type: 'bar',
+                    marker: {
+                        color: 'red', //  цвет второго графика на красный
+                        opacity: 0.6 //  прозрачность ключевых точек
+                    },
+                    line: {
+                        color: 'red' //  цвет линии второго графика на красный
+                    },
+                    name: 'Активные подписки'
+                }],
+            {title: 'Количество подписок'}
+        );
+        await Plotly.newPlot(
+            document.getElementById('subscription-avg-cheque'),
+            [{
+                x: subscriptionAvgCheque.map(item => item.paymentDate),
+                y: subscriptionAvgCheque.map(item => item.amount),
+                type: 'scatter',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Средний чек оформленной подписки'}
+        );
+        await Plotly.newPlot(
+            document.getElementById('lost-revenue'),
+            [{
+                x: fundLostIncome.map(item => item.paymentDate),
+                y: fundLostIncome.map(item => item.amount),
+                type: 'scatter',
+                marker: {
+                    color: 'blue', // Установите цвет графика на синий
+                    opacity: 0.6 // Установите прозрачность ключевых точек
+                },
+                line: {
+                    color: 'blue' // Установите цвет линии графика на синий
+                }
+            }],
+            {title: 'Упущенная выгода'}
+        );
     }
 
 
@@ -186,235 +406,7 @@
 {:else}
     <div class="container">
         <div class="chart-container">
-            <div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
-                <svg>
-                    <text x="250" y="15" text-anchor="middle" font-size="20" font-weight="bold" fill="black"
-                          opacity="0.7">
-                        {"Income"}
-                    </text>
-                    <!-- y axis -->
-                    <g class="axis y-axis">
-                        {#each yTicksIncome as tick}
-                            <g class="tick tick-{tick}" transform="translate(0, {yScaleIncome(tick)})">
-                                <line x2="100%"></line>
-                                <text y="-4" font-size="10">{tick} {tick === 15000 ? ' RUB' : ''}</text>
-                            </g>
-                        {/each}
-                    </g>
 
-                    <!-- x axis -->
-                    <g class="axis x-axis">
-                        {#each fundIncome as point, i}
-                            <g class="tick" transform="translate({barWidth / fundIncome.length - 25}, {height})">
-                                <text x="{xScale(i) / fundIncome.length + 30}"
-                                      y="-4">{width > 380 ? point.paymentDate : formatMobile(point.paymentDate)}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <g class='bars'>
-                        {#each fundIncome as point, i}
-                            <rect
-                                    x="{xScale(i) / fundIncome.length + 30}"
-                                    y="{yScaleIncome(point.amount)}"
-                                    width="{barWidth / fundIncome.length}"
-                                    height="{yScaleIncome(0) - yScaleIncome(point.amount)}"
-                            ></rect>
-                        {/each}
-                    </g>
-                </svg>
-            </div>
-            <div class="chart" bind:clientWidth={widthAvg} bind:clientHeight={heightAvg}>
-                <svg class="svg">
-                    <text x="250" y="15" text-anchor="middle" font-size="20" font-weight="bold" fill="black"
-                          opacity="0.7">
-                        {"Average Cheque"}
-                    </text>
-                    <!-- y axis -->
-                    <g class="axis y-axis">
-                        {#each yTicksAvgCheque as tick}
-                            <g class="tick tick-{tick}" transform="translate(0, {yScaleAvgCheque(tick)})">
-                                <line x2="100%"></line>
-                                <text y="-4" font-size="10">{tick} {tick === 1500 ? ' RUB' : ''}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <!-- x axis -->
-                    <g class="axis x-axis">
-                        {#each averageCheque as point, i}
-                            <g class="tick" transform="translate({barWidth / averageCheque.length - 25}, {height})">
-                                <text x="{xScale(i) / averageCheque.length + 30}"
-                                      y="-4">{width > 380 ? point.paymentDate : formatMobile(point.paymentDate)}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <g class='bars'>
-                        {#each averageCheque as point, i}
-                            <rect
-                                    x="{xScale(i) / averageCheque.length + 30}"
-                                    y="{yScaleAvgCheque(point.amount)}"
-                                    width="{barWidth / averageCheque.length}"
-                                    height="{yScaleAvgCheque(0) - yScaleAvgCheque(point.amount)}"
-                            ></rect>
-                        {/each}
-                    </g>
-                </svg>
-            </div>
-            <div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
-                <svg>
-                    <text x="250" y="15" text-anchor="middle" font-size="20" font-weight="bold" fill="black"
-                          opacity="0.7">
-                        {"Transaction Count"}
-                    </text>
-                    <!-- y axis -->
-                    <g class="axis y-axis">
-                        {#each yTicksCntTx as tick}
-                            <g class="tick tick-{tick}" transform="translate(0, {yScaleCntTx(tick)})">
-                                <line x2="100%"></line>
-                                <text y="-4" font-size="10">{tick} {tick === 20 ? ' TRANSACTIONS' : ''}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <!-- x axis -->
-                    <g class="axis x-axis">
-                        {#each transactionCnt as point, i}
-                            <g class="tick" transform="translate({barWidth / transactionCnt.length - 25}, {height})">
-                                <text x="{xScale(i) / transactionCnt.length + 30}"
-                                      y="-4">{width > 380 ? point.paymentDate : formatMobile(point.paymentDate)}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <g class='bars'>
-                        {#each transactionCnt as point, i}
-                            <rect
-                                    x="{xScale(i) / transactionCnt.length + 30}"
-                                    y="{yScaleCntTx(point.amount)}"
-                                    width="{barWidth / transactionCnt.length}"
-                                    height="{yScaleCntTx(0) - yScaleCntTx(point.amount)}"
-                            ></rect>
-                        {/each}
-                    </g>
-                </svg>
-            </div>
-            <div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
-                <svg>
-                    <text x="250" y="15" text-anchor="middle" font-size="20" font-weight="bold" fill="black"
-                          opacity="0.7">
-                        {"Subscription Count"}
-                    </text>
-                    <!-- y axis -->
-                    <g class="axis y-axis">
-                        {#each yTicksCntTx as tick}
-                            <g class="tick tick-{tick}" transform="translate(0, {yScaleCntTx(tick)})">
-                                <line x2="100%"></line>
-                                <text y="-4" font-size="10">{tick} {tick === 20 ? ' SUBSCRIPTIONS' : ''}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <!-- x axis -->
-                    <g class="axis x-axis">
-                        {#each subscriptionCnt as point, i}
-                            <g class="tick" transform="translate({barWidth / subscriptionCnt.length - 25}, {height})">
-                                <text x="{xScale(i) / subscriptionCnt.length + 30}"
-                                      y="-4">{width > 380 ? point.paymentDate : formatMobile(point.paymentDate)}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <g class='bars'>
-                        {#each subscriptionCnt as point, i}
-                            <rect
-                                    x="{xScale(i) / subscriptionCnt.length + 30}"
-                                    y="{yScaleCntTx(point.amount)}"
-                                    width="{barWidth / subscriptionCnt.length}"
-                                    height="{yScaleCntTx(0) - yScaleCntTx(point.amount)}"
-                            ></rect>
-                        {/each}
-                    </g>
-                </svg>
-            </div>
-            <div class="chart" bind:clientWidth={widthAvg} bind:clientHeight={heightAvg}>
-                <svg class="svg">
-                    <text x="250" y="15" text-anchor="middle" font-size="20" font-weight="bold" fill="black"
-                          opacity="0.7">
-                        {"Subscription Average Cheque"}
-                    </text>
-                    <!-- y axis -->
-                    <g class="axis y-axis">
-                        {#each yTicksAvgCheque as tick}
-                            <g class="tick tick-{tick}" transform="translate(0, {yScaleAvgCheque(tick)})">
-                                <line x2="100%"></line>
-                                <text y="-4" font-size="10">{tick} {tick === 1500 ? ' RUB' : ''}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <!-- x axis -->
-                    <g class="axis x-axis">
-                        {#each subscriptionAvgCheque as point, i}
-                            <g class="tick"
-                               transform="translate({barWidth / subscriptionAvgCheque.length - 25}, {height})">
-                                <text x="{xScale(i) / subscriptionAvgCheque.length + 30}"
-                                      y="-4">{width > 380 ? point.paymentDate : formatMobile(point.paymentDate)}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <g class='bars'>
-                        {#each subscriptionAvgCheque as point, i}
-                            <rect
-                                    x="{xScale(i) / subscriptionAvgCheque.length + 30}"
-                                    y="{yScaleAvgCheque(point.amount)}"
-                                    width="{barWidth / subscriptionAvgCheque.length}"
-                                    height="{yScaleAvgCheque(0) - yScaleAvgCheque(point.amount)}"
-                            ></rect>
-                        {/each}
-                    </g>
-                </svg>
-            </div>
-            <div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
-                <svg>
-                    <text x="250" y="15" text-anchor="middle" font-size="20" font-weight="bold" fill="black"
-                          opacity="0.7">
-                        {"Lost Income"}
-                    </text>
-                    <!-- y axis -->
-                    <g class="axis y-axis">
-                        {#each yTicksLostIncome as tick}
-                            <g class="tick tick-{tick}" transform="translate(0, {yScaleLostIncome(tick)})">
-                                <line x2="100%"></line>
-                                <text y="-4" font-size="10">{tick} {tick === 100000 ? ' RUB' : ''}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <!-- x axis -->
-                    <g class="axis x-axis">
-                        {#each fundLostIncome as point, i}
-                            <g class="tick" transform="translate({barWidth / fundLostIncome.length - 25}, {height})">
-                                <text x="{xScale(i) / fundLostIncome.length + 30}"
-                                      y="-4">{width > 380 ? point.paymentDate : formatMobile(point.paymentDate)}</text>
-                            </g>
-                        {/each}
-                    </g>
-
-                    <g class='bars'>
-                        {#each fundLostIncome as point, i}
-                            <rect
-                                    x="{xScale(i) / fundLostIncome.length + 30}"
-                                    y="{yScaleLostIncome(point.amount)}"
-                                    width="{barWidth / fundLostIncome.length}"
-                                    height="{yScaleLostIncome(0) - yScaleLostIncome(point.amount)}"
-                            ></rect>
-                        {/each}
-                    </g>
-                </svg>
-            </div>
             <div class="custom-daterange">
                 <DateRangeSelect
                         {startDateMin}
@@ -425,6 +417,15 @@
                         {endDateId}
                         on:onApplyDateRange={handleStatisticsDateRange}/>
             </div>
+            <script type="text/javascript" src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+
+            <div id="revenue"></div>
+            <div id="average-order-value"></div>
+            <div id="transaction-count"></div>
+            <div id="subscription-avg-cheque"></div>
+            <div id="subscription-count"></div>
+            <div id="lost-revenue"></div>
+
         </div>
         <div class="calendar-container">
             <h1>{"Посмотреть статистику за день"}</h1>
@@ -451,7 +452,7 @@
             <div class="stat-container">
                 {#each oneDayData as point, i}
                     <p class="calendar-text">{point.paymentDate}:<br>
-                        {point.amount} {i === 1 ? 'транзакций' : 'RUB'} </p>
+                        {point.amount} {i === 1 ? 'подписок' : i === 3 ? 'платежей' : 'RUB'} </p>
                     <br>
                 {/each}
             </div>
@@ -478,6 +479,8 @@
 
     * :global(.custom-daterange) {
         font-size: 25px;
+        align-items: center;
+        justify-content: center;
     }
 
     * :global(.custom-color) {
@@ -508,7 +511,7 @@
     .calendar-container {
         display: flex;
         flex-direction: column;
-        margin-left: 40px;
+        margin-left: 200px;
         gap: 10px;
         width: 300px;
         height: 100px;
@@ -530,14 +533,6 @@
         gap: 10px;
         align-items: center;
         /*margin-top: 250px;*/
-    }
-
-    .chart {
-        width: 100%;
-        /*width: 500px;*/
-        display: block;
-        float: left;
-        margin-right: 20px;
     }
 
     .date-button {
@@ -562,11 +557,6 @@
         height: 200px;
     }
 
-    .tick {
-        font-family: Helvetica, Arial;
-        font-size: .725em;
-        font-weight: 200;
-    }
 
     .tick line {
         stroke: #e2e2e2;

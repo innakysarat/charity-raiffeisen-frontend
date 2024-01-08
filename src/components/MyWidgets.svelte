@@ -15,26 +15,26 @@
 
     onMount(() => {
         getMyWidgets()
-          .then(widgetsIds => {
-              console.log(widgetsIds);
+            .then(widgetsIds => {
+                console.log(widgetsIds);
 
-              return Promise.all(
-                widgetsIds
-                  .map(
-                    widgetId =>
-                      getWidgetById(widgetId)
-                        .then(({templateId}) => ({
-                            widgetId,
-                            widthPx: templateId === "first" ? 720 : 500,
-                            heightPx: templateId === "first" ? 360 : 250,
-                        }))
-                  )
-              );
-          })
-          .then(ws => {
-              ws.sort();
-              widgets = ws.filter((widget, i) => widget.widgetId % 2 === 0);
-          })
+                return Promise.all(
+                    widgetsIds
+                        .map(
+                            widgetId =>
+                                getWidgetById(widgetId)
+                                    .then(({templateId}) => ({
+                                        widgetId,
+                                        widthPx: templateId === "first" ? 720 : 500,
+                                        heightPx: templateId === "first" ? 360 : 250,
+                                    }))
+                        )
+                );
+            })
+            .then(ws => {
+                ws.sort();
+                widgets = ws.filter((widget, i) => widget.widgetId % 2 === 0);
+            })
     });
 
     const widgetToIframeCode = (widget) => {
@@ -42,6 +42,17 @@
               src="${BASE_URL}/widget.html?widgetId=${widget.widgetId}"
               width="${widget.widthPx}"
               height="${widget.heightPx}"></iframe>`;
+    }
+
+    function copyToClipboard() {
+        var textToCopy = document.getElementById("widget-code").value;
+        navigator.clipboard.writeText(textToCopy)
+            .then(function () {
+                console.log("Text copied to clipboard: " + textToCopy);
+            })
+            .catch(function (error) {
+                console.error("Failed to copy text: " + error);
+            });
     }
 
 </script>

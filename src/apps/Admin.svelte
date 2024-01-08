@@ -89,16 +89,6 @@
     </div>
 {/if}
 
-<!--<nav>-->
-<!--    <Link to="/widget">Widget</Link>-->
-<!--    <Link to="/template1">Template1</Link>-->
-<!--</nav>-->
-
-<!--<Router>-->
-<!--    <Widget path="/widget" />-->
-<!--    <Template1 path="/template1" />-->
-<!--</Router>-->
-
 <style>
     .auth-container {
         display: flex;
@@ -109,10 +99,8 @@
     .drawer-container {
         position: relative;
         display: flex;
-        height: 1000px;
-        max-width: 1600px;
-        /*border: 1px solid*/
-        /*var(--mdc-theme-text-hint-on-background, rgba(0, 0, 0, 0.1));*/
+        height: 100%;
+        width: 100%;
         overflow: hidden;
         z-index: 0;
     }

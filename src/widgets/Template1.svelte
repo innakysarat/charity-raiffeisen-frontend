@@ -151,14 +151,12 @@
                 </TextField>
             </div>
             <div class="fiscal-buttons">
-                <Fab class="custom-button" color="{mainColor}"
-                     on:click={sendEmail} extended>
-                    <Label class="label-color">Получить</Label>
-                </Fab>
-                <Fab class="custom-button" color="{mainColor}"
-                     on:click={skip} extended>
-                    <Label class="label-color">Пропустить</Label>
-                </Fab>
+                <Button color="{mainColor}" class="strategy-button"
+                        on:click={sendEmail}>Получить
+                </Button>
+                <Button color="{mainColor}" class="strategy-button"
+                        on:click={skip}>Пропустить
+                </Button>
             </div>
             <div class="right-icons">
                 <img width="{120}" height="{60}" src="{sbpIcon}" alt="Иконка СБП – Система быстрых платежей"/>
@@ -190,24 +188,6 @@
         color: black;
         align-self: center;
     }
-
-    * :global(.custom-button) {
-        background-color: rgb(260, 219, 0);
-        min-width: 105px;
-        text-align: center;
-        font-size: 20px;
-        text-transform: none;
-        padding-left: 2px;
-        padding-right: 2px;
-        border-radius: 40px;
-        height: 40px;
-    }
-
-    * :global(.label-color) {
-        color: black;
-        font-size: 13px;
-    }
-
 
     .widget {
         display: flex;
